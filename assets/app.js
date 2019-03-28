@@ -1,5 +1,4 @@
-(function () {
-
+$(document).ready(function () {
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyCdk3-ABzxsILhHD-gp3DFIrbupZ7Ghuio",
@@ -23,7 +22,7 @@
         var trainTime = moment($("#first-input").val().trim(), "HH:mm").format("X");
         var trainFreq = $("#freq-input").val().trim();
 
-        // Creates local "temporary" object for holding employee data
+        // Creates local "temporary" object for holding train data
         var newTrain = {
             name: trainName,
             dest: trainDest,
@@ -31,14 +30,13 @@
             freq: trainFreq
         };
 
-        // Uploads employee data to the database
         database.ref().push(newTrain);
 
         // Logs everything to console
-        console.log(newEmp.name);
-        console.log(newEmp.dest);
-        console.log(newEmp.time);
-        console.log(newEmp.freq);
+        console.log(newTrain.name);
+        console.log(newTrain.dest);
+        console.log(newTrain.time);
+        console.log(newTrain.freq);
 
         alert("Added the Train - I'll get rid of this dumb Alert soon");
 
@@ -49,7 +47,6 @@
         $("#freq-input").val("");
     });
 
-    // 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
     database.ref().on("child_added", function (childSnapshot) {
         console.log(childSnapshot.val());
 
@@ -59,13 +56,11 @@
         var trainTime = childSnapshot.val().time;
         var trainFreq = childSnapshot.val().freq;
 
-        // Employee Info
         console.log(trainName);
         console.log(trainDest);
         console.log(trainTime);
         console.log(trainFreq);
 
-        // Prettify the employee start
         var trainTimeMod = moment.unix(trainTime).format("X");
 
         // Calculate the months worked using hardcore math
@@ -91,3 +86,5 @@
         $("#train-table > tbody").append(newRow);
     });
 })
+
+
